@@ -1,0 +1,279 @@
+  //Importing Libraries for more features.
+    import processing.sound.*;
+    import gifAnimation.*;
+
+Hero theDoc;
+
+//Global Variables
+
+                                                                                                        int[] player = new int[4];
+                                                                                                        boolean[] keys= new boolean[4];
+
+
+  //These are for the walls to make the game look more 3d.
+      //Left X value
+        float floatXL;
+      //Top Y value
+        float floatYT;
+      //Right X value
+        float floatXR;
+      //Bottom Y value
+        float floatYB;
+
+      //This is to make the walls appear as if though they are moving.
+        float startSpdY=0.625;
+        float startSpdX=5;
+    
+     //These are for the musics and other stuff that they only play once.
+        int clickerStart;
+        int lobbyMusic;
+        int tutorialClick;
+                                                                                                              PImage docSprite;
+
+    
+    
+    //Creating the Gif for the first level
+        Gif DocDance;
+    
+    //Soundtracks
+        //Main Boss Theme.
+          SoundFile Gilette;
+      
+        //Start Menu Music.
+          SoundFile TIDC;
+
+void setup(){
+  
+  
+    docSprite = loadImage("docSprite.jpg");
+  
+  theDoc = new Hero();
+
+    //Background size
+      size(1280,720);
+  
+    //Limiting the framerate so that the rate at which frames are produced are always the same.
+      frameRate(60);
+      smooth(16);
+    //This is for a loading screen. This a placeholder until the game loads in.
+      fill(0);
+      rect(0,0,width,height);
+      fill(255);
+      text("Loading",100,250);
+    
+    //Setting variables so it will only perfom it's action once.
+      lobbyMusic=0;
+      clickerStart=0;
+      tutorialClick=0;
+    //Setting where the lines will start to give the illusion off that it is a room.
+        //The left X positions for the "Room"
+          floatXL=width/4;
+        //The top Y positions for the "Room"
+          floatYT=height/6;
+        //The right X positions for the "Room"
+          floatXR=width-width/4;
+        //The bottom Y positions for the "Room"
+          floatYB=height-height/6;
+          
+player[1]=200;
+player[2]=height/2-10;
+player[3]=5;
+
+          
+      
+    //Loading the gif into the DocDance variable.
+     DocDance = new Gif(this,"DocDance.gif");
+      
+        //Loading the soundfiles into their respective variables.
+          TIDC = new SoundFile(this,"TIDC.mp3");
+          Gilette = new SoundFile(this,"Gilette.mp3");
+}
+
+void draw(){
+  //This will play the lobby music on a loop only once.
+    if(lobbyMusic==0){
+      TIDC.loop();
+      lobbyMusic++;
+        }
+    
+     //Loading in the starting screen.
+      startScreen();
+  
+    //Loading in the start game. Without this you wouldn't be able to click start.
+      startGame();
+    WASDmovement();     
+}
+
+void startScreen(){
+    //This colors in the background of the main screen.
+      fill(255,115,115);
+  
+    //This changes the variables and gives the walls of the interior an appearance as if though they were rotating.
+      floatXL=floatXL-startSpdX;
+      floatXR=floatXR-startSpdX;
+      floatYT=floatYT-startSpdY;
+      floatYB=floatYB+startSpdY;
+  
+      //This is actually drawing the interior.
+        drawInterior();
+    
+        //This is an If statement to make the lines reset to the right of the screen and give the appearance that the walls are moving left to right.
+          if(floatXL<-width/2){
+        floatXR=width*1.5;
+        floatXL=width;
+          }
+
+        //This is to make the horizontal lines of the "Room" go back down after reaching the top.
+          if(floatYT<0){
+        startSpdY=-startSpdY;
+          }
+      
+        //This is to make the horizontal lines go back up so they dont keep on going down past the bottom/top.
+          if(floatXL==width/4+5){
+        startSpdY=-startSpdY;
+          }
+      
+      //Green Start Button
+        fill(100,250,50);
+        rect(width/2-300,height/2-100,300+width/4,height/4-50);
+        
+      //Purple Title Box
+        fill(#6441A4);
+        rect(width/2-300,height/6-75,width/4+300,height/4-50);
+  //Text inside boxes
+    fill(0);
+    textSize(100);
+    text("Start Game",width/2-250,height/2);
+    textSize(50);
+    text("Transparent Mistakes",width/2-250,height/6);
+ 
+}
+  
+ void drawInterior(){
+     
+  //Background of interior
+    rect(0,0,width,height);
+  
+  //drawing diagonel lines
+    line(0,0,floatXL,floatYT);
+    line(width,0,floatXR,floatYT);
+    line(0,height,floatXL,floatYB);
+    line(width,height,floatXR,floatYB);
+  
+  //drawing vertical&horizontal lines
+  
+    //vertical lines
+      line(floatXL,floatYT,floatXL,floatYB);
+      line(floatXR,floatYT,floatXR,floatYB);
+    
+    //horizontal lines
+      line(floatXL,floatYT,floatXR,floatYT);
+      line(floatXL,floatYB,floatXR,floatYB);
+      
+}
+  
+      //This function allows for the game to start and switches scenes.
+void startGame(){
+  
+  //This triggers other events to happen.
+    if(mousePressed==true && ((mouseX>width/2-300 && mouseX<325+width/2) && (mouseY<height/2+30 && mouseY>height/2-100))){
+  tutorialClick=1;
+    }
+if(tutorialClick==1){
+  TIDC.stop();
+            fill(0);
+  rect(0,0,width,height);
+      textSize(30);
+      fill(255);
+      text("W A S D to move and SHIFT makes you move faster", 100,height/2);
+     text("Hit any key to start",100,height/2+200);
+     if(keyPressed==true){
+       tutorialClick=2;
+     }
+     
+} else {if(tutorialClick==2){
+  clickerStart++;
+}
+}
+    
+    //This if-else-if statement triggers the music and stop the menu music. It adds one and then draws the beginning sequence.
+      if(clickerStart==2 ){
+
+            Gilette.loop();
+    clickerStart++;
+      } else{
+      if(clickerStart>2){
+
+    beginningSequence();
+    image(docSprite,player[1],player[2]);
+        }
+      }
+}
+
+
+void beginningSequence(){
+//Setting most of the variables to their default so nothing moves
+  startSpdX=0;
+  startSpdY=0;
+  floatXL=width/4;
+  floatYT=height/6;
+  floatXR=width-width/4;
+  floatYB=height-height/6;
+
+    //Draws the gif and then plays it.
+      image(DocDance,0,0);
+      DocDance.play();
+      fill(255,148,148,200);
+      rect(100,50,1080,620);
+      
+
+
+        
+
+
+}
+  
+  
+  void keyPressed(){
+  if(key=='w'||key=='W'){
+    keys[0]=true;}
+  if(key=='a'||key=='A'){
+    keys[1]=true;}
+  if(key=='s'||key=='S'){
+    keys[2]=true;}
+  if(key=='d'||key=='D'){
+    keys[3]=true;}
+  if(keyCode==SHIFT){
+   player[3]=10; 
+  }
+}
+
+
+  //checks when key is released
+void keyReleased(){
+  if(key=='w'||key=='W'){
+    keys[0]=false;}
+  if(key=='a'||key=='A'){
+    keys[1]=false;}
+  if(key=='s'||key=='S'){
+    keys[2]=false;}
+  if(key=='d'||key=='D'){
+    keys[3]=false;}
+  if(keyCode==SHIFT){
+     player[3]=5; 
+  }
+}
+
+void WASDmovement(){
+           //wasd movement
+      if(keys[0]){              //w
+       player[2]-=player[3];}   
+      if(keys[1]){              //a
+       player[1]-=player[3];}   
+      if(keys[2]){              //s
+       player[2]+=player[3];}   
+      if(keys[3]){              //d
+       player[1]+=player[3];} 
+  
+  
+}
