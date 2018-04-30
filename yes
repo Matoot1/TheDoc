@@ -15,10 +15,13 @@
     boolean[] keys = new boolean[3];
 
 void setup() {
+  
   //Setting the max framerate high so the drawings look smoother.
     frameRate(100000);
+    
   //Setting fullscreen so the person has more space to draw.
   fullScreen();
+  
   //Setting the background white
     background(255);
 }
@@ -35,13 +38,16 @@ void draw() {
 }
 
 void Bar() {
+  
   //Setting strokes&otherstuff so everything inside this function is not affected by other functions.
     stroke(0);
     fill(255);
     strokeWeight(5);
     textSize(12);
+    
   //Actual Top Bar
     rect(0, 0, width, 95);
+    
   //Lines to seperate areas.
     strokeWeight(1);
     stroke(1);
@@ -49,17 +55,20 @@ void Bar() {
     line(975,0,975,95);
     line(1180, 0, 1180, 95);
     line(1330,0,1330,95);
+    
   //Shape Area
     fill(0);
     text("Shapes",575,15);
     text("1 for a square",575,25);
     text("2 for a triangle",575,35);
     text("hold SHIFT to fill the shapes in with the current color",575,45);
+    
   //Loop for the color selector boxes
-    for (int colorRectX=1200;colorRectX<=1280;colorRectX+=20){
+    for (int colorRectX=1200;colorRectX<=1280;colorRectX+=20) {
       fill(colorBoxes[(colorRectX-1200)/20]);
       rect(colorRectX,15,colorSquareSize,colorSquareSize);
     }
+    
   //Calling in other functions that are in the bar.
      chooseThickness();
      chooseColor();
@@ -68,27 +77,35 @@ void Bar() {
 }
 
 void opacitySlide() {
+  
   //Setting stroke&fill
     fill(0);
     stroke(1);
+    
   //Indicates what area of bar
     text("Opacity", 1430,25);
+    
   //Line for the slider
     line(1380, 15, 1380, 85);
+    
   //Rectangle for the slider
     fill(255);
     rect(1367.5, barTransY, 25, 10);
+    
   //Allows for slider to be moved up and down
-    if (mousePressed==true&&((mouseX>1367.5&&mouseX<1382.5+25)&&(mouseY>barTransY-10&&mouseY<barTransY+10))){
+    if (mousePressed==true&&((mouseX>1367.5&&mouseX<1382.5+25)&&(mouseY>barTransY-10&&mouseY<barTransY+10))) {
       barTransY=mouseY; 
+      
       //Makes sure it doesnt go down too far.
-        if (barTransY>75){
+        if (barTransY>75) {
           barTransY=75; 
         }
+        
       //Makes sure it doesnt go up too far.
-        if (barTransY<15){
+        if (barTransY<15) {
           barTransY=15;
         }
+        
     //Sets the transparency of what your painting
       trans = barTransY;
     }
@@ -96,9 +113,11 @@ void opacitySlide() {
 
 //Function to allow for choosing thickness of brush.
 void chooseThickness() {
+  
   //Setting stroke&fill
     stroke(1);
     fill(0);
+    
   //Area to indicate the thickness options
     text("Thickness", 1115, 20);
     ellipse(1130, 25, 3, 3);
@@ -108,6 +127,7 @@ void chooseThickness() {
     rect(999,10,60,20);
     fill(0);
     text("VERY BIG", 1000, 25);
+    
   //Allows for user to change brush size when click in those areas.
     if (mousePressed==true){
       if ((mouseX>1127&&mouseX<1133)&&(mouseY>22&&mouseY<28)) {
@@ -128,41 +148,44 @@ void chooseThickness() {
 
 //Function to let users choose color of brush.
 void chooseColor() {
-//Allows users to click inside parameters to change colors
-  if (mousePressed==true){
-      if (mouseY>15&&mouseY<15+colorSquareSize){
-          if (mouseX>1200&&mouseX<1200+colorSquareSize) {
-            tempC = #42f445;
-          }
-        
-          if (mouseX>1220&&mouseX<1220+colorSquareSize) {
-            tempC = #ff0000;
-          }
-        
-          if (mouseX>1240&&mouseX<1240+colorSquareSize) {
-            tempC = #d0ff00;
-          }
-        
-          if (mouseX>1260&&mouseX<1260+colorSquareSize) {
-            tempC = #000000;
-          }
-        
-          if (mouseX>1280&&mouseX<1280+colorSquareSize) {
-            tempC = #ffffff;
-          }
-        
-          if (mouseX>1200&&mouseX<1200+colorSquareSize) {
-            tempC = #42f445;
-          }
-      }
-  }
+  
+  //Allows users to click inside parameters to change colors
+    if (mousePressed==true) {
+        if (mouseY>15&&mouseY<15+colorSquareSize) {
+            if (mouseX>1200&&mouseX<1200+colorSquareSize) {
+              tempC = #42f445;
+            }
+          
+            if (mouseX>1220&&mouseX<1220+colorSquareSize) {
+              tempC = #ff0000;
+            }
+          
+            if (mouseX>1240&&mouseX<1240+colorSquareSize) {
+              tempC = #d0ff00;
+            }
+          
+            if (mouseX>1260&&mouseX<1260+colorSquareSize) {
+              tempC = #000000;
+            }
+          
+            if (mouseX>1280&&mouseX<1280+colorSquareSize) {
+              tempC = #ffffff;
+            }
+          
+            if (mouseX>1200&&mouseX<1200+colorSquareSize) {
+              tempC = #42f445;
+            }
+        }
+    }
 }
 
 //Function that lets the user paint.
 void Paint() {
+  
   //setting strokes&fill
     noStroke();
     fill(tempC, trans);
+    
   //Allows user to paint when mouse is pressed.
     if (mousePressed==true&&mouseY>100) {
       ellipse(mouseX, mouseY, brushSize, brushSize);
@@ -170,14 +193,16 @@ void Paint() {
 }
 
 //Function to let the user easily clear the entire board
-void clearBoard(){
+void clearBoard() {
+  
   //Red box and text to indicate
     fill(0);
     text("CLEAR BOARD",250,15);
     fill(#ff0000);
     rect(240,25,100,45);
+    
   //Clears the board by placing a white rectangle.
-    if (mousePressed==true&&(mouseX>240&&mouseX<340)&&(mouseY>25&&mouseY<60)){
+    if (mousePressed==true&&(mouseX>240&&mouseX<340)&&(mouseY>25&&mouseY<60)) {
       fill(255);
       rect(0,0,width,height);
     }
@@ -185,63 +210,72 @@ void clearBoard(){
 
 //Allows user to exit the program.
 void exitPaint() {
+  
   //setting stroke&fill
     stroke(0);
     strokeWeight(1);
     fill(#ff0000);
+    
   //Red box with X to mark exit.
     rect(width-45,0,45,15);
     fill(0);
     line(width-45,0,width,15);
     line(width-45,15,width,0);
+    
   //Exits when button is clicked
   if ((mousePressed==true)&&((mouseX>width-45&&mouseX<width)&&(mouseY>0&&mouseY<15))){
     exit(); 
   }
 }
 
-//Allows
-void shapePaint(){
-  if (keys[0]==false){
-    noFill();
-    stroke(0);
-    strokeWeight(1);
-  } else {
-  fill(tempC);
+//Allows user to make shapes
+void shapePaint() {
+  
+  //Makes it not filled in but when shift is pressed, it fills it in with selected color.
+    if (keys[0]==false) {
+      noFill();
+      stroke(0);
+      strokeWeight(1);
+    } else {
+      fill(tempC);
+      }
 
-
-  }
-      if (keys[1]==true){
+  //Draws a square
+    if (keys[1]==true) {
       rect(mouseX-50,mouseY-50,100,100);
     }
-        if (keys[2]==true){
-     triangle(mouseX,mouseY-25,mouseX-25,mouseY+50,mouseX+25,mouseY+50);
+    
+  //Draws a triangle
+    if (keys[2]==true) {
+      triangle(mouseX,mouseY-25,mouseX-25,mouseY+50,mouseX+25,mouseY+50);
     }
 }
 
 
 
 
-void keyPressed(){
- if (keyCode==SHIFT){
-   keys[0]=true;
- }
- if (key=='1'||key=='!'){
-  keys[1]=true; 
- }
- if (key=='2'||key=='@'){
- keys[2]=true;
- }
+void keyPressed() {
+  //changes booleans to true when key is pressed
+    if (keyCode==SHIFT) {
+      keys[0]=true;
+    }
+    if (key=='1'||key=='!') {
+      keys[1]=true; 
+    }
+    if (key=='2'||key=='@') {
+      keys[2]=true;
+    }
 }
 
-void keyReleased(){
-  if (keyCode==SHIFT){
-   keys[0]=false; 
-  }
-   if (key=='1'||key=='!'){
-  keys[1]=false; 
- }
- if (key=='2'||key=='@'){
-  keys[2]=false; 
- }
+void keyReleased() {
+  //changes booleans to false when key is released
+    if (keyCode==SHIFT) {
+      keys[0]=false; 
+    }
+    if (key=='1'||key=='!') {
+      keys[1]=false; 
+    }
+    if (key=='2'||key=='@') {
+      keys[2]=false; 
+    }
 }
